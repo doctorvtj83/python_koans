@@ -33,10 +33,43 @@ from runner.koan import *
 #
 # Your goal is to write the score method.
 
-def score(dice):
-    # You need to write this method
-    pass
 
+def score(dice):
+    # Score sets of three
+    score, remainder = score_sets_of_three(dice)
+    # Score remainder
+    score = score_remainder(score,remainder)
+    
+    return score
+
+
+# define method which finds 3 of a kind and scores it
+def score_sets_of_three(dice):
+    remainder = dice[:]
+    if dice.count(1)>=3:
+        for x in range(3):
+            remainder.remove(1)
+
+        return (1000,remainder)
+
+    for i in range(2,7):
+        if dice.count(i)>=3:
+            for x in range(3):
+                remainder.remove(i)
+
+            return(100*i,remainder)
+
+    return(0,remainder)
+
+
+# define method which scores the rest
+def score_remainder(score,remainder):
+    # score ones
+    score += remainder.count(1)*100
+    # score fives
+    score += remainder.count(5)*50
+
+    return score
 
 class AboutScoringProject(Koan):
     def test_score_of_an_empty_list_is_zero(self):
